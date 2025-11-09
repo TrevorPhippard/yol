@@ -157,6 +157,16 @@ models:
     model:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
+
+  ReturnTime:
+    fields:
+      user_service:
+        resolver: true
+      post_service:
+        resolver: true
+      connection_service:
+        resolver: true
+
   Todo:
     fields:
       user:
