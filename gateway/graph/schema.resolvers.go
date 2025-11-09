@@ -7,11 +7,12 @@ package graph
 import (
 	"context"
 	"yol/graph/model"
+	rpc_stuff "yol/service"
 )
 
 // ReturnTime is the resolver for the ReturnTime field.
 func (r *queryResolver) ReturnTime(ctx context.Context) (*model.ReturnTime, error) {
-	str1 := "hi world"
+	str1 := rpc_stuff.ClientConn(":50051", "user_service")
 	str2 := "oh hai world"
 	str3 := "hello world"
 
