@@ -12,9 +12,9 @@ import (
 
 // ReturnTime is the resolver for the ReturnTime field.
 func (r *queryResolver) ReturnTime(ctx context.Context) (*model.ReturnTime, error) {
-	str1 := rpc_stuff.ClientConn(":50051", "user_service")
-	str2 := "oh hai world"
-	str3 := "hello world"
+	str1 := "user_service"
+	str2 := "post_service"
+	str3 := "connection_service"
 
 	return &model.ReturnTime{
 		UserService:       &str1,
@@ -23,7 +23,29 @@ func (r *queryResolver) ReturnTime(ctx context.Context) (*model.ReturnTime, erro
 	}, nil
 }
 
+// UserService is the resolver for the user_service field.
+func (r *returnTimeResolver) UserService(ctx context.Context, obj *model.ReturnTime) (*string, error) {
+	str1 := rpc_stuff.ClientConn(":50051", "user_service")
+	return &str1, nil
+}
+
+// PostService is the resolver for the post_service field.
+func (r *returnTimeResolver) PostService(ctx context.Context, obj *model.ReturnTime) (*string, error) {
+	str2 := rpc_stuff.ClientConn(":50052", "post_service")
+	return &str2, nil
+}
+
+// ConnectionService is the resolver for the connection_service field.
+func (r *returnTimeResolver) ConnectionService(ctx context.Context, obj *model.ReturnTime) (*string, error) {
+	str3 := rpc_stuff.ClientConn(":50053", "connection_service")
+	return &str3, nil
+}
+
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// ReturnTime returns ReturnTimeResolver implementation.
+func (r *Resolver) ReturnTime() ReturnTimeResolver { return &returnTimeResolver{r} }
+
 type queryResolver struct{ *Resolver }
+type returnTimeResolver struct{ *Resolver }

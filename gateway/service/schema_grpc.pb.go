@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.33.0
-// source: grpc_stuff/schema.proto
+// source: service/schema.proto
 
 package yol
 
@@ -123,5 +123,5 @@ var Greeter_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "grpc_stuff/schema.proto",
+	Metadata: "service/schema.proto",
 }

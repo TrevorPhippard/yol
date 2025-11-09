@@ -11,7 +11,7 @@ import (
 
 func ClientConn(addr string, name string) string {
 	conn, err := grpc.Dial(
-		"localhost:50051",
+		addr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()), // ✅ call it
 	)
 	if err != nil {

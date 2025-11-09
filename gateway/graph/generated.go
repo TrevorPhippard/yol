@@ -40,6 +40,7 @@ type Config struct {
 
 type ResolverRoot interface {
 	Query() QueryResolver
+	ReturnTime() ReturnTimeResolver
 }
 
 type DirectiveRoot struct {
@@ -59,6 +60,11 @@ type ComplexityRoot struct {
 
 type QueryResolver interface {
 	ReturnTime(ctx context.Context) (*model.ReturnTime, error)
+}
+type ReturnTimeResolver interface {
+	UserService(ctx context.Context, obj *model.ReturnTime) (*string, error)
+	PostService(ctx context.Context, obj *model.ReturnTime) (*string, error)
+	ConnectionService(ctx context.Context, obj *model.ReturnTime) (*string, error)
 }
 
 type executableSchema struct {
@@ -429,7 +435,7 @@ func (ec *executionContext) _ReturnTime_user_service(ctx context.Context, field 
 		field,
 		ec.fieldContext_ReturnTime_user_service,
 		func(ctx context.Context) (any, error) {
-			return obj.UserService, nil
+			return ec.resolvers.ReturnTime().UserService(ctx, obj)
 		},
 		nil,
 		ec.marshalOString2ᚖstring,
@@ -442,8 +448,8 @@ func (ec *executionContext) fieldContext_ReturnTime_user_service(_ context.Conte
 	fc = &graphql.FieldContext{
 		Object:     "ReturnTime",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
 		},
@@ -458,7 +464,7 @@ func (ec *executionContext) _ReturnTime_post_service(ctx context.Context, field 
 		field,
 		ec.fieldContext_ReturnTime_post_service,
 		func(ctx context.Context) (any, error) {
-			return obj.PostService, nil
+			return ec.resolvers.ReturnTime().PostService(ctx, obj)
 		},
 		nil,
 		ec.marshalOString2ᚖstring,
@@ -471,8 +477,8 @@ func (ec *executionContext) fieldContext_ReturnTime_post_service(_ context.Conte
 	fc = &graphql.FieldContext{
 		Object:     "ReturnTime",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
 		},
@@ -487,7 +493,7 @@ func (ec *executionContext) _ReturnTime_connection_service(ctx context.Context, 
 		field,
 		ec.fieldContext_ReturnTime_connection_service,
 		func(ctx context.Context) (any, error) {
-			return obj.ConnectionService, nil
+			return ec.resolvers.ReturnTime().ConnectionService(ctx, obj)
 		},
 		nil,
 		ec.marshalOString2ᚖstring,
@@ -500,8 +506,8 @@ func (ec *executionContext) fieldContext_ReturnTime_connection_service(_ context
 	fc = &graphql.FieldContext{
 		Object:     "ReturnTime",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
 		},
@@ -2044,11 +2050,104 @@ func (ec *executionContext) _ReturnTime(ctx context.Context, sel ast.SelectionSe
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("ReturnTime")
 		case "user_service":
-			out.Values[i] = ec._ReturnTime_user_service(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._ReturnTime_user_service(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "post_service":
-			out.Values[i] = ec._ReturnTime_post_service(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._ReturnTime_post_service(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "connection_service":
-			out.Values[i] = ec._ReturnTime_connection_service(ctx, field, obj)
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._ReturnTime_connection_service(ctx, field, obj)
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
