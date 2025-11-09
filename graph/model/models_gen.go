@@ -2,18 +2,11 @@
 
 package model
 
-type Mutation struct {
-}
-
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
-}
-
 type Query struct {
 }
 
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type ReturnTime struct {
+	UserService       *string `json:"user_service,omitempty"`
+	PostService       *string `json:"post_service,omitempty"`
+	ConnectionService *string `json:"connection_service,omitempty"`
 }
